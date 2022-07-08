@@ -1,7 +1,37 @@
-import React from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { NextPage } from "next";
+import { login as loginService } from "../services";
+import { IAuthResponse } from '../models/index';
+import { setCookie } from '../utils/methods/index';
+import { useRouter } from "next/router";
 
 const Auth: NextPage = () => {
+	const router = useRouter()
+	const [username, setUsername] = useState<string>("")
+	const [password, setPassword] = useState<string>("")
+
+	const login = async (e: SyntheticEvent) => {
+		e.preventDefault()
+
+		try {
+			if (!username || !password) return
+
+			const { accessToken, refreshToken }: IAuthResponse = await loginService({
+				username, password
+			})
+
+			if (accessToken && refreshToken) {
+				setCookie("access", accessToken)
+				setCookie("refresh", refreshToken)
+			}
+
+			await router.push("/")
+		} catch (err: any) {
+			/** Show error message here */
+			alert(err?.response?.data?.message || "Something went wrong while processing your request, please try again later.")
+		}
+	}
+
 	return (
 		<section className="h-screen">
 			<div className="container px-6 py-12 h-full">
@@ -14,7 +44,7 @@ const Auth: NextPage = () => {
 						/>
 					</div>
 					<div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-						<form>
+						<form onSubmit={login}>
 							<div className="w-full flex justify-center py-5">
 								<h3 className="font-semibold text-xl">Chat/Video Conferencing Portal Login</h3>
 							</div>
@@ -22,7 +52,9 @@ const Auth: NextPage = () => {
 								<input
 									type="text"
 									className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-									placeholder="Email address"
+									placeholder="Username"
+									value={username}
+									onChange={e => setUsername(e.target.value)}
 								/>
 							</div>
 
@@ -31,6 +63,8 @@ const Auth: NextPage = () => {
 									type="password"
 									className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
 									placeholder="Password"
+									value={password}
+									onChange={e => setPassword(e.target.value)}
 								/>
 							</div>
 

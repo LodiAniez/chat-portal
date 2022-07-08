@@ -4,5 +4,6 @@ export interface IAuth {
 }
 
 export interface IAuthResponse {
-	token: string;
+	accessToken: string;
+	refreshToken?: string;
 }
