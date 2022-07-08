@@ -23,4 +23,4 @@ const io: socketServer = new socketServer(server, {
 
 eventListeners(io)
 
-server.listen(CHAT_PORT, () => console.log(`Listening on port ${CHAT_PORT}.`))
+server.listen(CHAT_PORT, () => console.log(`Chat server listening on port ${CHAT_PORT}.`))

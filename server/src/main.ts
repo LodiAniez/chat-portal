@@ -17,4 +17,4 @@ app.use(cors())
 
 route(app)
 
-app.listen(MAIN_PORT, () => console.log(`Listening on port ${MAIN_PORT}.`))
+app.listen(MAIN_PORT, () => console.log(`Protected server is listening on port ${MAIN_PORT}.`))

@@ -4,8 +4,14 @@ import { SmileyIcon } from '../components/icons/smiley'
 import { AttachmentIcon } from '../components/icons/attachment'
 import { MicIcon } from '../components/icons/mic'
 import { SendIcon } from '../components/icons/send'
+import { VideoIcon } from '../components/icons/video'
+import { io, Socket } from "socket.io-client"
+import { listeners } from '../utils/listeners'
 
 const Home: NextPage = () => {
+	const socket: Socket = io("http://localhost:8000")
+
+	listeners(socket)
 	return (
 		<div className='w-screen h-screen bg-gray-400'>
 			<Head>
@@ -18,12 +24,17 @@ const Home: NextPage = () => {
 				<div className="max-w-2xl border rounded">
 					<div>
 						<div className="w-full">
-							<div className="relative flex items-center p-3 border-b border-gray-300 bg-gray-200">
-								<img className="object-cover w-10 h-10 rounded-full"
-									src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="username" />
-								<span className="block ml-2 font-bold text-gray-600">Emma</span>
-								<span className="absolute w-3 h-3 bg-green-600 rounded-full left-10 top-3">
-								</span>
+							<div className='relative w-full flex justify-between px-3 border-b border-gray-300 bg-gray-200'>
+								<div className="relative flex items-center p-3">
+									<img className="object-cover w-10 h-10 rounded-full"
+										src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383__340.jpg" alt="username" />
+									<span className="block ml-2 font-bold text-gray-600">Emma</span>
+									<span className="absolute w-3 h-3 bg-green-600 rounded-full left-10 top-3"></span>
+								</div>
+
+								<button>
+									<VideoIcon />
+								</button>
 							</div>
 							<div className="relative w-full p-6 overflow-y-auto h-[40rem] bg-gray-200">
 
